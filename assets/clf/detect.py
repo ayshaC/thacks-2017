@@ -1,6 +1,6 @@
 # to train the model
-# python detect.py --shape-predictor shape_predictor_68_face_landmarks.dat
-# python detect.py --shape-predictor shape_predictor_68_face_landmarks.dat --alarm alarm.wav
+# python detect.py --shape-predictor predict.dat
+# python detect.py --shape-predictor predict.dat --alarm alarm.wav
 
 
 # import the necessary packages
