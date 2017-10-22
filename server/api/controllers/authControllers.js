@@ -9,7 +9,7 @@ exports.token = function(request, response) {
     User.find({_id:username, password: password}, function(err,user){
         if(err){
             response.status(502).send();
-        }else if(user == null){
+        }else if(typeof user === "undefined"){
             response.status(401).send();
         }else{
             var token = jwt.sign({expiresIn: "1d", sub:username}, config.hmacsecret);
