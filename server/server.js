@@ -30,8 +30,7 @@ app.post("/addEvent", function(request,response){
     var device = request.body.id;
     var timeStamp = request.body.time;
     var s3key = request.body.key;
-    var saved = 1;
-
+    
     var newEvent = new Event({
         eventID: guid,
         deviceID: device,
@@ -39,15 +38,11 @@ app.post("/addEvent", function(request,response){
         awsKey: s3key
     });
     newEvent.save(function(err, Event) {
-        if (err) return console.error("ERROR: EVENT CANNOT BE SAVED")
-        saved = 0;
+        if (err){
+            console.log("ERROR: EVENT CANNOT BE SAVED")
+            response.status(502).send();
+        }
+        response.status(201).send();
     });
-
-    if (saved == 0) {
-        response.send("ERROR: EVENT NOT SAVED!");
-    } else {
-        response.send("NEW EVENT SAVED!");
-    }
-
 
  });

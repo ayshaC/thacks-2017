@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var userModelSchema = new Schema({
     _id: String, //email
-    deviceGroupId: Number,
+    groupId: Number,
     password: String,
 });
 
