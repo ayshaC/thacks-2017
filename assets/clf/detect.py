@@ -83,7 +83,7 @@ args = vars(ap.parse_args())
 
 EYE_AR_THRESH = 0.3
 BLINK_CONSEC_FRAMES = 5
-EYE_AR_CONSEC_FRAMES = 45
+EYE_AR_CONSEC_FRAMES = 30
 
 # initialize the frame counter as well as a boolean used to
 # indicate if the alarm is going off
@@ -94,10 +94,9 @@ NO_LOOP = 0
 ALARM_ON = False
 
 NO_DETECTION = 0
-CHIN_DIST_CURR = 0
 CHIN_DIST_ORIG = 0
 ORIG_DIFF = 0
-WIDTH = 1200
+WIDTH = 900
 
 # initialize dlib's face detector (HOG-based) and then create
 # the facial landmark predictor
@@ -119,9 +118,6 @@ predictor = dlib.shape_predictor(args['shape_predictor'])
 print '[INFO] starting video stream thread...'
 vs = VideoStream(src=args['webcam']).start()
 time.sleep(1.0)
-camera = picamera.PiCamera()
-stream = picamera.PiCameraCircularIO(camera, seconds=15)
-camera.start_recording(stream, format='h264')
 # loop over frames from the video stream
 
 while True:
@@ -168,13 +164,10 @@ while True:
         rightChinDist = eye_chin_dist(rightEye, chin, 'right')
         leftChinDist = eye_chin_dist(leftEye, chin, 'left')
 
-        avgChinDist = (rightChinDist + leftChinDist) / 2.0
+        CHIN_DIST_CURR = (rightChinDist + leftChinDist) / 2.0
 
-        CHIN_DIST_CURR = (CHIN_DIST_CURR + avgChinDist) / 2.0
-
-        if CHIN_DIST_CURR == 0:
-            CHIN_DIST_CURR == avgChinDist
-            CHIN_DIST_ORIG == avgChinDist
+        if CHIN_DIST_ORIG == 0:
+            CHIN_DIST_ORIG == CHIN_DIST_CURR
 
         diff = CHIN_DIST_CURR - CHIN_DIST_ORIG
 
@@ -239,10 +232,6 @@ while True:
                                    args=(args['alarm'], ))
                         t.deamon = True
                         t.start()
-                    print 'recording'
-                    camera.wait_recording(5)
-                    stream.copy_to('clip.h264')
-                    # call(['MP4Box','-fps','30','-add','clip.h264','clip.mp4'])
                     # draw an alarm on the frame
 
                 cv2.putText(
@@ -291,7 +280,7 @@ while True:
             2,
             )
         print 'The movement in chin is %d' % delta
-        if delta > WIDTH * 6:
+        if delta > WIDTH * 2.5:
             cv2.putText(
                 frame,
                 'PAY ATTENTION',
@@ -307,7 +296,7 @@ while True:
 
     # print 'Nothing Detected %d' % NO_LOOP
 
-    if NO_LOOP > 15:
+    if NO_LOOP > 10:
         cv2.putText(
             frame,
             'LOOK AHEAD!',
