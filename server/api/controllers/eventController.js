@@ -45,8 +45,6 @@ exports.get_events = function(request,response){
     token = token.replace("Bearer ", "");
     var decodedToken = jwt.verify(token, config.hmacsecret);
     var username = decodedToken.sub;
-    var startTime = new Date(request.body.startTime);
-    var endTime = new Date(request.body.endTime);
     var groupId = 0;
     User.find({username: username}, function(err, doc){
         if(err){
@@ -55,7 +53,7 @@ exports.get_events = function(request,response){
         }else{
             groupId = doc.groupID;
             Event.find({
-                groupId: groupId
+                groupId: groupId  
             }, function(err, docs){
                 if(err){
                     console.log(err);
