@@ -5,8 +5,7 @@ var eventModelSchema = mongoose.Schema({
     eventID: String,
     groupID: String,
     time: Date,
-    awsKey: String,
-
+    awsKey: String
 });
 
 var Event = mongoose.model('Event', eventModelSchema);
