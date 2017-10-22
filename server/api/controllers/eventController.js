@@ -38,7 +38,7 @@ exports.get_event = function(request,response){
 }
 
 exports.get_events = function(request,response){
-    var token = req.headers.authorization;
+    var token = request.headers.authorization;
     token = token.replace("Bearer ", "");
     var decodedToken = jwt.verify(token, config.hmacsecret);
     var username = decodedToken.sub;
