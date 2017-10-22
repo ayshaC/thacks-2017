@@ -18,6 +18,19 @@ import imutils
 import time
 import dlib
 import cv2
+import sys
+
+def save_video():   
+    cap = cv2.VideoCapture(0)
+    out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width,frame_height))
+    print 'starting save'
+    count = 0
+    while(count < 60):
+        ret, frame = cap.read()
+        if ret == True: 
+            out.write(frame)
+        count = count + 1
+    print 'ending save'
 
 
 def sound_alarm(path):
@@ -63,7 +76,6 @@ def eye_aspect_ratio(eye):
     # return the eye aspect ratio
 
     return aspect_ratio
-
 
 # construct the argument parse and parse the arguments
 
@@ -237,26 +249,8 @@ while True:
                                    args=(args['alarm'], ))
                         t.deamon = True
                         t.start()
-                    cap = cv2.VideoCapture(0)
-                    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-                    out = cv2.VideoWriter('output.avi',fourcc,3.0,(640,480))
-
-                    while(cap.isOpened()):
-                        ret, frame = cap.read()
-                        if ret == True:
-                            frame=cv2.flip(frame,0)
-                            out.write(frame)
-                            if cv2.waitKey(1) & 0xFF == ord('q'):
-                                break
-                        else:
-                            break
-
-                    cap.release()
-                    out.release()
-                    cv2.destroyAllWindows()
-
                     # draw an alarm on the frame
-
+                save_video()
                 cv2.putText(
                     frame,
                     'DROWSINESS ALERT!',
@@ -356,3 +350,4 @@ while True:
 
 cv2.destroyAllWindows()
 vs.stop()
+
