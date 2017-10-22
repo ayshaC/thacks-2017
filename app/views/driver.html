@@ -1,0 +1,52 @@
+<style>
+	.demo-layout-transparent {
+		background: url('https://getmdl.io/assets/demos/transparent.jpg') center / cover;
+	}
+	.demo-layout-transparent .mdl-layout__header,
+	.demo-layout-transparent .mdl-layout__drawer-button {
+  /* This background is dark, so we set text to white. Use 87% black instead if
+  your background is light. */
+  color: white;
+}
+
+.mdl-cell {
+	box-sizing: border-box;
+	background-color: #BDBDBD;
+	height: 200px;
+	padding-left: 8px;
+	padding-top: 4px;
+	color: white;
+}
+.mdl-grid:first-of-type .mdl-cell {
+	height: 50px;
+}
+
+.device {
+	margin: 10px;
+}
+
+.background {
+	background-color:rgba(222, 222, 222, 0.7);
+}
+
+</style>
+
+<div ng-controller = "controller" class="demo-layout-transparent mdl-layout mdl-js-layout" style="height: 100vh">
+	<div style="align-self: center; margin: auto" class="demo-card-wide mdl-card mdl-shadow--2dp test">
+		<div class="mdl-card__title">
+    		<h2 class="mdl-card__title-text">{{selectedEvent}}</h2>
+  		</div>
+		<video style = "margin: auto" width="320" height="240" controls>
+			<source src="fidgetvideo.mp4" type="video/mp4">
+		</video>
+		<div style="display: inline-block;">
+			{{selectedEvent}}
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
