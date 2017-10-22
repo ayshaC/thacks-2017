@@ -7,6 +7,7 @@ module.exports = function(app) {
     app.post("/api/addEvent", events_controller.add_event);
     app.use('/api', function (req, res, next) {
         var token = req.headers.authorization;
+        console.log(token);
         token = token.replace("Bearer ", "");
         jwt.verify(token, config.hmacsecret, function(err,decoded){
             if(err){
