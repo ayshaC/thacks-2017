@@ -2,7 +2,9 @@ var app = angular.module("myApp", ["ngRoute", "ngAnimate", "ngStorage"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        templateUrl : "views/login.html"
+        templateUrl : "views/login.html",
+        controller: "loginController",
+        controllerAs: 'vm'
     })
     .when("/drivers", {
         templateUrl : "views/drivers.html"
@@ -23,7 +25,7 @@ app.factory('AuthenticationService', Service);
         return service;
  
         function Login(username, password, callback) {
-            $http.post('/api/authenticate', { username: username, password: password })
+            $http.post('http://35.183.6.3:443/auth/token', { "username": username, "password": password })
                 .success(function (response) {
                     // login successful if there's a token in the response
                     if (response.token) {
