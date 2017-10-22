@@ -154,7 +154,7 @@ while True:
 		# thresholds and frame counters
 		cv2.putText(frame, "Ratio: {:.2f}".format(aspect_ratio), (300, 30),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-        cv2.putText(frame, "Blinks: {}".format(TOTAL), (10, 30),
+        cv2.putText(frame, "Blinks: {}".format(TOTAL), (10, 60),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
 	# show the frame
