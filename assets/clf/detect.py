@@ -27,6 +27,22 @@ def sound_alarm(path):
     playsound.playsound(path)
 
 
+def eye_chin_dist(eye, chin, side):
+
+    # compute euclidean  distance for the eyes
+
+    if side == 'right':
+        A = dist.euclidean(eye[5], chin[6])
+        B = dist.euclidean(eye[4], chin[7])
+    elif side == 'left':
+        A = dist.euclidean(eye[5], chin[10])
+        B = dist.euclidean(eye[4], chin[11])
+
+    avg_dist = (A + B) * 50.0
+
+    return avg_dist
+
+
 def eye_aspect_ratio(eye):
 
     # compute the euclidean distances between the two sets of
@@ -78,6 +94,9 @@ NO_LOOP = 0
 ALARM_ON = False
 
 NO_DETECTION = 0
+CHIN_DIST_CURR = 0
+CHIN_DIST_ORIG = 0
+ORIG_DIFF = 0
 
 # initialize dlib's face detector (HOG-based) and then create
 # the facial landmark predictor
@@ -92,6 +111,7 @@ predictor = dlib.shape_predictor(args['shape_predictor'])
 (lStart, lEnd) = face_utils.FACIAL_LANDMARKS_IDXS['left_eye']
 (rStart, rEnd) = face_utils.FACIAL_LANDMARKS_IDXS['right_eye']
 (nStart, nEnd) = face_utils.FACIAL_LANDMARKS_IDXS['nose']
+(jStart, jEnd) = face_utils.FACIAL_LANDMARKS_IDXS['jaw']
 
 # start the video stream thread
 
@@ -138,15 +158,34 @@ while True:
 
         nose = shape[nStart:nEnd]
 
-        # chin = shape[jStart:jEnd]
+        chin = shape[jStart:jEnd]
 
         leftEAR = eye_aspect_ratio(leftEye)
         rightEAR = eye_aspect_ratio(rightEye)
+        rightChinDist = eye_chin_dist(rightEye, chin, 'right')
+        leftChinDist = eye_chin_dist(leftEye, chin, 'left')
+
+        avgChinDist = (rightChinDist + leftChinDist) / 2.0
+
+        CHIN_DIST_CURR = (CHIN_DIST_CURR + avgChinDist) / 2.0
+
+        if CHIN_DIST_CURR == 0:
+            CHIN_DIST_CURR == avgChinDist
+            CHIN_DIST_ORIG == avgChinDist
+
+        diff = CHIN_DIST_CURR - CHIN_DIST_ORIG
+
+        if ORIG_DIFF == 0:
+            ORIG_DIFF = diff
+
+        delta = diff - ORIG_DIFF
+
 
         # average the eye aspect ratio together for both eyes
 
         aspect_ratio = (leftEAR + rightEAR) / 2.0
-        print 'Here %s' % aspect_ratio
+
+        # print 'Here %s' % aspect_ratio
 
         # compute the convex hull for the left and right eye, then
         # visualize each of the eyes
@@ -159,15 +198,16 @@ while True:
         cv2.drawContours(frame, [leftEyeHull], -1, (0, 0xFF, 0), 1)
         cv2.drawContours(frame, [rightEyeHull], -1, (0, 0xFF, 0), 1)
 
-        # cv2.drawContours(frame, [nose], -1, (0,255,0), 1)
+        cv2.drawContours(frame, [nose], -1, (0, 0xFF, 0), 1)
 
-        # cv2.drawContours(frame, [chin], 10, (0,255, 0), 1)
+        cv2.drawContours(frame, [chin], -1, (0, 0xFF, 0), 1)
 
         NO_LOOP = 0
 
         if COUNTER == 0:
             num_frames += 1
-            print 'No Counter %d' % num_frames
+
+            # print 'No Counter %d' % num_frames
 
         # check to see if the eye aspect ratio is below the blink
         # threshold, and if so, increment the blink frame counter
@@ -175,7 +215,8 @@ while True:
         if aspect_ratio < EYE_AR_THRESH:
             COUNTER += 1
             num_frames = 0
-            print 'Counter at %d' % COUNTER
+
+            # print 'Counter at %d' % COUNTER
 
             # if the eyes were closed for a sufficient number of
             # then sound the alarm
@@ -244,8 +285,23 @@ while True:
             (0, 0, 0xFF),
             2,
             )
+        print 'The movement in chin is %d' % delta
+        if delta > 3700:
+            cv2.putText(
+                frame,
+                'PAY ATTENTION',
+                (150, 150),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.7,
+                (0, 0, 0xFF),
+                2,
+                )
+            break
+
     NO_LOOP += 1
-    print 'Nothing Detected %d' % NO_LOOP
+
+    # print 'Nothing Detected %d' % NO_LOOP
+
     if NO_LOOP > 10:
         cv2.putText(
             frame,
