@@ -1,6 +1,9 @@
+var User = require('../models/user');
 var Guid = require("guid");
 var mongoose = require('mongoose');
 var Event = require('../models/event');
+var jwt = require('jsonwebtoken');
+var config = require('../../config/config.js')
 
 exports.add_event = function(request,response){
     var guid = Guid.create();
@@ -38,28 +41,25 @@ exports.get_event = function(request,response){
 }
 
 exports.get_events = function(request,response){
-    var token = request.header.authorization;
+    var token = request.headers.authorization;
+    token = token.replace("Bearer ", "");
     var decodedToken = jwt.verify(token, config.hmacsecret);
     var username = decodedToken.sub;
-    var startTime = new Date(request.body.startTime);
-    var endTime = new Date(request.body.endTime);
     var groupId = 0;
     User.find({username: username}, function(err, doc){
         if(err){
+            console.log(err);
             response.status(502).send();
         }else{
             groupId = doc.groupID;
             Event.find({
-                time:{
-                    $gte: startTime,
-                    $lt: endTime
-                },
-                groupID: groupId
+                groupId: groupId  
             }, function(err, docs){
                 if(err){
+                    console.log(err);
                     response.status(502).send();
                 }else{
-                    return docs;
+                    response.status(200).send(docs);
                 }
             })
         }
