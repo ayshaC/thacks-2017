@@ -3,9 +3,10 @@ var mongoose = require("mongoose");
 var app = express();
 var config = require('./config/config');
 var port = config.port;
+var Guid = require("guid");
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost');
+mongoose.connect(config.mongodbconnectionstring);
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -25,18 +26,23 @@ app.listen(port, function() {
 
 
 app.post("/addEvent", function(request,response){
-    var device = request.body.id;
+    var guid = Guid.create();
+    var group = request.body.id;
     var timeStamp = request.body.time;
     var s3key = request.body.key;
-
+    
     var newEvent = new Event({
-        deviceID: device,
+        eventID: guid,
+        groupID: group,
         time: timeStamp,
         awsKey: s3key
     });
-
     newEvent.save(function(err, Event) {
-        if (err) return console.error("didnt save something wrong yo")
+        if (err){
+            console.log("ERROR: EVENT CANNOT BE SAVED")
+            response.status(502).send();
+        }
+        response.status(201).send();
     });
 
  });

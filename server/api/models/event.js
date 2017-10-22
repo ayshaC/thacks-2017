@@ -2,9 +2,11 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var eventModelSchema = mongoose.Schema({
-    deviceID: String,
+    eventID: String,
+    groupID: String,
     time: Date,
-    awsKey: String
+    awsKey: String,
+
 });
 
 var Event = mongoose.model('Event', eventModelSchema);
