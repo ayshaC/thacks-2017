@@ -6,7 +6,8 @@ var jwt = require('jsonwebtoken');
 exports.token = function(request, response) {
     var username = request.body.username;
     var password = request.body.password;
-    User.find({_id:username, password: password}, function(err,user){
+    User.find({username:username, password: password}, function(err,user){
+        console.log(user);
         if(err){
             response.status(502).send();
         }else if(typeof user === "undefined"){
