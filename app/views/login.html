@@ -37,45 +37,26 @@ video#bgvid {
 
 <div ng-controller="loginController" height: 100%; display: flex; align-items: center; align-content: center; text-align: center">
 
-		<div style="align-self: center; margin: auto; margin-top: 200px; padding: 20px" class="demo-card-wide mdl-card mdl-shadow--2dp test" class="fade">
-			<div class="mdl-card__title">
-				<h2 class="mdl-card__title-text">Login</h2>
-			</div>
-			<!-- <form action="#/drivers">
-				<div class="mdl-textfield mdl-js-textfield">
-					<input class="mdl-textfield__input" type="text" id="sample1" ng-model="vm.username">
-					<label class="mdl-textfield__label" for="sample1">Username...</label>
-				</div>
-				<div class="mdl-textfield mdl-js-textfield">
-					<input class="mdl-textfield__input" type="text" id="sample1" ng-model="vm.password">
-					<label class="mdl-textfield__label" for="sample1">Password...</label>
-				</div>
-			</form>
-			<div class="mdl-card__actions mdl-card--border">
-				<a ng-click = "getEvents()" href="#/drivers" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-					Login
-				</a>
-			</div> -->
-			<form name="form" ng-submit="form.$valid && vm.login()" novalidate>
-        <div class="form-group" ng-class="{ 'has-error': form.$submitted && form.username.$invalid }">
-            <label for="username">Username</label>
-            <input type="text" name="username" class="form-control" ng-model="vm.username" required />
-            <div ng-messages="form.$submitted && form.username.$error" class="help-block">
-                <div ng-message="required">Username is required</div>
-            </div>
-        </div>
-        <div class="form-group" ng-class="{ 'has-error': form.$submitted && form.password.$invalid }">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="form-control" ng-model="vm.password" required />
-            <div ng-messages="form.$submitted && form.password.$error" class="help-block">
-                <div ng-message="required">Password is required</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <button ng-disabled="vm.loading" ng-click="vm.login()" class="btn btn-primary">Login</button>
-        </div>
-        <div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
-    </form>
+	<div style="align-self: center; margin: auto; margin-top: 200px; padding: 20px" class="demo-card-wide mdl-card mdl-shadow--2dp test" class="fade">
+		<div class="mdl-card__title">
+			<h2 class="mdl-card__title-text">Login</h2>
 		</div>
-
+		<form name="form" ng-submit="form.$valid && vm.login()" novalidate>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<input class="mdl-textfield__input" type="text" id="sample3" ng-model="vm.username">
+				<label class="mdl-textfield__label" for="sample3">Username...</label>
+			</div>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<input class="mdl-textfield__input" type="password" id="sample3" ng-model="vm.password">
+				<label class="mdl-textfield__label" for="sample3">Password...</label>
+			</div>
+			<div class="form-group">
+				<button ng-click="vm.login()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+					Login
+				</button>
+			</div>
+			<div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
+		</form>
 	</div>
+
+</div>
