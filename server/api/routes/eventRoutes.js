@@ -4,6 +4,7 @@ var jwt = require('jsonwebtoken');
 var config = require('../../config/config');
 
 module.exports = function(app) {
+    app.post("/api/addEvent", events_controller.add_event);
     app.use(function (req, res, next) {
         var token = req.headers.authorization;
         jwt.verify(token, config.hmacsecret, function(err,decoded){
@@ -13,8 +14,7 @@ module.exports = function(app) {
         });
         next();
     });
-    app.use(bodyParser.json());     
-    app.post("/api/addEvent", events_controller.add_event);
+    app.use(bodyParser.json());    
     app.get("/api/getEvents", events_controller.get_events);
     app.get("/api/getEvent", events_controller.get_event);
 };
