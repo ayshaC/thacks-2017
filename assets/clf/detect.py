@@ -242,7 +242,7 @@ while True:
                     print 'recording'
                     camera.wait_recording(5)
                     stream.copy_to('clip.h264')
-                    call(['MP4Box','-fps','30','-add','clip.h264','clip.mp4'])
+                    # call(['MP4Box','-fps','30','-add','clip.h264','clip.mp4'])
                     # draw an alarm on the frame
 
                 cv2.putText(
