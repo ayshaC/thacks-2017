@@ -51,11 +51,13 @@ args = vars(ap.parse_args())
 # frames the eye must be below the threshold for to set off the
 # alarm
 EYE_AR_THRESH = 0.3
-EYE_AR_CONSEC_FRAMES = 48
+BLINK_CONSEC_FRAMES = 5
+EYE_AR_CONSEC_FRAMES = 45
 
 # initialize the frame counter as well as a boolean used to
 # indicate if the alarm is going off
 COUNTER = 0
+TOTAL = 0
 ALARM_ON = False
 
 # initialize dlib's face detector (HOG-based) and then create
@@ -139,6 +141,11 @@ while True:
 		# otherwise, the eye aspect ratio is not below the blink
 		# threshold, so reset the counter and alarm
 		else:
+            # if the eyes were closed for a sufficient number of
+			# then increment the total number of blinks
+			if COUNTER >= BLINK_CONSEC_FRAMES:
+				TOTAL += 1
+
 			COUNTER = 0
 			ALARM_ON = False
 
@@ -146,6 +153,8 @@ while True:
 		# with debugging and setting the correct eye aspect ratio
 		# thresholds and frame counters
 		cv2.putText(frame, "Ratio: {:.2f}".format(aspect_ratio), (300, 30),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        cv2.putText(frame, "Blinks: {}".format(TOTAL), (10, 30),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
 	# show the frame
