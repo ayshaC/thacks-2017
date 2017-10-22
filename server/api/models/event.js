@@ -3,9 +3,10 @@ var Schema = mongoose.Schema;
 
 var eventModelSchema = mongoose.Schema({
     eventID: String,
-    deviceID: String,
+    groupID: String,
     time: Date,
-    awsKey: String
+    awsKey: String,
+
 });
 
 var Event = mongoose.model('Event', eventModelSchema);

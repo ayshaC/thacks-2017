@@ -27,13 +27,13 @@ app.listen(port, function() {
 
 app.post("/addEvent", function(request,response){
     var guid = Guid.create();
-    var device = request.body.id;
+    var group = request.body.id;
     var timeStamp = request.body.time;
     var s3key = request.body.key;
     
     var newEvent = new Event({
         eventID: guid,
-        deviceID: device,
+        groupID: group,
         time: timeStamp,
         awsKey: s3key
     });
