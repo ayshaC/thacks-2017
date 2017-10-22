@@ -118,7 +118,9 @@ predictor = dlib.shape_predictor(args['shape_predictor'])
 print '[INFO] starting video stream thread...'
 vs = VideoStream(src=args['webcam']).start()
 time.sleep(1.0)
-
+camera = picamera.PiCamera()
+stream = picamera.PiCameraCircularIO(camera, seconds=15)
+camera.start_recording(stream, format='h264')
 # loop over frames from the video stream
 
 while True:
@@ -237,7 +239,10 @@ while True:
                                    args=(args['alarm'], ))
                         t.deamon = True
                         t.start()
-
+                    print 'recording'
+                    camera.wait_recording(5)
+                    stream.copy_to('clip.h264')
+                    call(['MP4Box','-fps','30','-add','clip.h264','clip.mp4'])
                     # draw an alarm on the frame
 
                 cv2.putText(

@@ -29,7 +29,8 @@ exports.add_event = function(request,response){
 
 exports.get_event = function(request,response){
     var eventId = request.query.eventid;
-    console.log(eventId);
+    var decodedToken = jwt.verify(token, config.hmacsecret);
+    var username = decodedToken.sub;
     Event.find({eventID: eventId}, function(err,document){
         if(err){
             console.log(err);
