@@ -83,7 +83,7 @@ args = vars(ap.parse_args())
 
 EYE_AR_THRESH = 0.3
 BLINK_CONSEC_FRAMES = 5
-EYE_AR_CONSEC_FRAMES = 30
+EYE_AR_CONSEC_FRAMES = 20
 
 # initialize the frame counter as well as a boolean used to
 # indicate if the alarm is going off
@@ -96,7 +96,7 @@ ALARM_ON = False
 NO_DETECTION = 0
 CHIN_DIST_ORIG = 0
 ORIG_DIFF = 0
-WIDTH = 900
+WIDTH = 1200
 
 # initialize dlib's face detector (HOG-based) and then create
 # the facial landmark predictor
@@ -127,7 +127,7 @@ while True:
     # channels)
 
     frame = vs.read()
-    frame = imutils.resize(frame, width=900)
+    frame = imutils.resize(frame, width=WIDTH)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     num_frames = 0
 
@@ -226,6 +226,7 @@ while True:
                     # check to see if an alarm file was supplied,
                     # and if so, start a thread to have the alarm
                     # sound played in the background
+                    #r = requests.post('http://35.183.6.3:443/addEvent',data={'groupid':1, s3key='https://s3.ca-central-1.amazonaws.com/thacks2017/20171022_101827%5B1%5D.mp4'})
 
                     if args['alarm'] != '':
                         t = Thread(target=sound_alarm,
@@ -281,6 +282,7 @@ while True:
             )
         print 'The movement in chin is %d' % delta
         if delta > WIDTH * 2.5:
+            #r = requests.post('http://35.183.6.3:443/addEvent',data={'groupid':2, s3key='https://s3.ca-central-1.amazonaws.com/thacks2017/20171022_101827%5B1%5D.mp4'})
             cv2.putText(
                 frame,
                 'PAY ATTENTION',
@@ -297,6 +299,7 @@ while True:
     # print 'Nothing Detected %d' % NO_LOOP
 
     if NO_LOOP > 10:
+        #r = requests.post('http://35.183.6.3:443/addEvent',data={'groupid':3, s3key='https://s3.ca-central-1.amazonaws.com/thacks2017/20171022_101827%5B1%5D.mp4'})
         cv2.putText(
             frame,
             'LOOK AHEAD!',
