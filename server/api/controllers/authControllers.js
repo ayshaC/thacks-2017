@@ -11,14 +11,14 @@ exports.token = function(request, response) {
         if(err){
             response.status(502).send();
         }else if(typeof user === "undefined"){
-            response.status(401).send();
-        }else{
             var token = jwt.sign({expiresIn: "1d", sub:username}, config.hmacsecret);
             var result={};
             result.access_token=token;
             result.expires_in="86400";
             result.token_type="Bearer";
-            response.send(result);
+            response.status(200).send(result);
+        }else{
+            response.status(401).send();
         }
     });
 };
