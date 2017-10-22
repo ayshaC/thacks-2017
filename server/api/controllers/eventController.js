@@ -28,9 +28,9 @@ exports.add_event = function(request,response){
 }
 
 exports.get_event = function(request,response){
+    var token = request.query.token;
     var eventId = request.query.eventid;
-    var decodedToken = jwt.verify(token, config.hmacsecret);
-    var username = decodedToken.sub;
+    console.log(eventId);
     Event.find({eventID: eventId}, function(err,document){
         if(err){
             console.log(err);
@@ -42,8 +42,7 @@ exports.get_event = function(request,response){
 }
 
 exports.get_events = function(request,response){
-    var token = request.headers.authorization;
-    token = token.replace("Bearer ", "");
+    var token = request.query.token;
     var decodedToken = jwt.verify(token, config.hmacsecret);
     var username = decodedToken.sub;
     var groupId = 0;
