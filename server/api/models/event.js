@@ -1,11 +1,10 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var eventModelSchema = new Schema({
-    _id: ObjectId,
-    timestamp: Date,
-    deviceId: ObjectId,
-    clipAddress:     
+var eventModelSchema = mongoose.Schema({
+    deviceID: String,
+    time: Date,
+    awsKey: String
 });
 
 var Event = mongoose.model('Event', eventModelSchema);
