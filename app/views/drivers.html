@@ -1,0 +1,89 @@
+<style>
+	.demo-layout-transparent {
+	}
+	.demo-layout-transparent .mdl-layout__header,
+	.demo-layout-transparent .mdl-layout__drawer-button {
+  /* This background is dark, so we set text to white. Use 87% black instead if
+  your background is light. */
+  color: white;
+}
+
+.mdl-cell {
+	box-sizing: border-box;
+	background-color: #BDBDBD;
+	height: 200px;
+	padding-left: 8px;
+	padding-top: 4px;
+	color: white;
+}
+.mdl-grid:first-of-type .mdl-cell {
+	height: 50px;
+}
+
+.device {
+	margin: 10px;
+}
+
+.background {
+	background-color:rgba(222, 222, 222, 0.7);
+}
+
+.mdl-data-table {
+	background-color: none;
+}
+
+</style>
+<div ng-controller="controller" class="demo-layout-transparent mdl-layout mdl-js-layout">
+  <header class="mdl-layout__header mdl-layout__header--transparent">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title" style="color: black">SleepyFleety</span>
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer"></div>
+      <!-- Navigation -->
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" style="color: black" href="#/">Logout</a>
+      </nav>
+    </div>
+  </header>
+  <main class="mdl-layout__content">
+  <div style="height: 100vh; display: flex; align-items: center; align-content: center; text-align: center">
+<div style="align-self: center; margin: auto" class="mdl-card mdl-shadow--2dp test">
+
+  <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp noBackground" style="width: 100%">
+  <thead>
+    <tr>
+      <th class="mdl-data-table__cell--non-numeric">Event</th>
+      <th>Time</th>
+      <th>Device</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="event in events" ng-click="selectEvent(event)">
+      <td class="mdl-data-table__cell--non-numeric">{{event['eventId']}}</td>
+      <td>{{event['timestamp']}}</td>
+      <td>{{event['s3key']}}</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+  <div style="align-self: center; margin: auto; font-family: Helvetica,Arial,sans-serif; padding: 20px; width: auto" ng-if="eventSelected" class="mdl-card mdl-shadow--2dp test">
+		<div class="mdl-card__title">
+    		<div class="mdl-card__title-text">{{selectedEvent['eventId']}}</div>
+  		</div>
+		<video style = "margin: auto" width="426" height="320" controls>
+			<source src="fidgetvideo.mp4" type="video/mp4">
+		</video>
+		<div style="display: inline-block;" class="mdl-card__supporting-text">
+			Event: {{selectedEvent['eventId']}} <br>
+			Time: {{selectedEvent['timestamp']}} <br>
+			Device: {{selectedEvent['deviceid']}} <br>
+		</div>
+	</div>
+</div>
+  </main>
+</div>
+
+
+
+</div>

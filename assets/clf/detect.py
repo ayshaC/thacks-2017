@@ -97,6 +97,7 @@ NO_DETECTION = 0
 CHIN_DIST_CURR = 0
 CHIN_DIST_ORIG = 0
 ORIG_DIFF = 0
+WIDTH = 1200
 
 # initialize dlib's face detector (HOG-based) and then create
 # the facial landmark predictor
@@ -130,7 +131,7 @@ while True:
     # channels)
 
     frame = vs.read()
-    frame = imutils.resize(frame, width=450)
+    frame = imutils.resize(frame, width=900)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     num_frames = 0
 
@@ -181,7 +182,6 @@ while True:
             ORIG_DIFF = diff
 
         delta = diff - ORIG_DIFF
-
 
         # average the eye aspect ratio together for both eyes
 
@@ -248,9 +248,9 @@ while True:
                 cv2.putText(
                     frame,
                     'DROWSINESS ALERT!',
-                    (10, 30),
+                    (20, 60),
                     cv2.FONT_HERSHEY_SIMPLEX,
-                    0.7,
+                    1.5,
                     (0, 0, 0xFF),
                     2,
                     )
@@ -274,9 +274,9 @@ while True:
         cv2.putText(
             frame,
             'Ratio: {:.2f}'.format(aspect_ratio),
-            (300, 30),
+            (600, 60),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.7,
+            1.5,
             (0, 0, 0xFF),
             2,
             )
@@ -284,20 +284,20 @@ while True:
         cv2.putText(
             frame,
             'Blinks: {}'.format(TOTAL),
-            (10, 60),
+            (40, 120),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.7,
+            1.5,
             (0, 0, 0xFF),
             2,
             )
         print 'The movement in chin is %d' % delta
-        if delta > 3700:
+        if delta > WIDTH * 6:
             cv2.putText(
                 frame,
                 'PAY ATTENTION',
-                (150, 150),
+                (200, 300),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                0.7,
+                1.5,
                 (0, 0, 0xFF),
                 2,
                 )
@@ -307,16 +307,28 @@ while True:
 
     # print 'Nothing Detected %d' % NO_LOOP
 
-    if NO_LOOP > 10:
+    if NO_LOOP > 15:
         cv2.putText(
             frame,
-            'LOOK UP!',
-            (150, 150),
+            'LOOK AHEAD!',
+            (300, 300),
             cv2.FONT_HERSHEY_SIMPLEX,
-            1.0,
+            2.0,
             (0, 0, 0xFF),
             2,
             )
+
+        if not ALARM_ON:
+            ALARM_ON = True
+
+                    # check to see if an alarm file was supplied,
+                    # and if so, start a thread to have the alarm
+                    # sound played in the background
+
+            if args['alarm'] != '':
+                t = Thread(target=sound_alarm, args=(args['alarm'], ))
+                t.deamon = True
+                t.start()
 
     # show the frame
 

@@ -1,0 +1,81 @@
+<style>
+.fade.ng-enter {
+  transition:2s linear all;
+  opacity:0;
+}
+
+/* The finishing CSS styles for the enter animation */
+.fade.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+.fade.ng-leave {
+  transition:2s linear all;
+  opacity:1;
+}
+.fade.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+video#bgvid { 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background: url('https://getmdl.io/assets/demos/transparent.jpg') no-repeat;
+    background-size: cover; 
+}
+</style>
+
+<div ng-controller="loginController" height: 100%; display: flex; align-items: center; align-content: center; text-align: center">
+
+		<div style="align-self: center; margin: auto; margin-top: 200px; padding: 20px" class="demo-card-wide mdl-card mdl-shadow--2dp test" class="fade">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text">Login</h2>
+			</div>
+			<!-- <form action="#/drivers">
+				<div class="mdl-textfield mdl-js-textfield">
+					<input class="mdl-textfield__input" type="text" id="sample1" ng-model="vm.username">
+					<label class="mdl-textfield__label" for="sample1">Username...</label>
+				</div>
+				<div class="mdl-textfield mdl-js-textfield">
+					<input class="mdl-textfield__input" type="text" id="sample1" ng-model="vm.password">
+					<label class="mdl-textfield__label" for="sample1">Password...</label>
+				</div>
+			</form>
+			<div class="mdl-card__actions mdl-card--border">
+				<a ng-click = "getEvents()" href="#/drivers" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+					Login
+				</a>
+			</div> -->
+			<form name="form" ng-submit="form.$valid && vm.login()" novalidate>
+        <div class="form-group" ng-class="{ 'has-error': form.$submitted && form.username.$invalid }">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" ng-model="vm.username" required />
+            <div ng-messages="form.$submitted && form.username.$error" class="help-block">
+                <div ng-message="required">Username is required</div>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.$submitted && form.password.$invalid }">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" ng-model="vm.password" required />
+            <div ng-messages="form.$submitted && form.password.$error" class="help-block">
+                <div ng-message="required">Password is required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button ng-disabled="vm.loading" ng-click="vm.login()" class="btn btn-primary">Login</button>
+        </div>
+        <div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
+    </form>
+		</div>
+
+	</div>

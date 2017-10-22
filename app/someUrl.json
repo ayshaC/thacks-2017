@@ -1,0 +1,4 @@
+
+{"info": [{"eventId": "id", "timestamp": "time", "deviceid": "device", "s3key": "s3"}, 
+                            {"eventId": "id2", "timestamp": "time2", "deviceid": "device2", "s3key": "s32"}, 
+                            {"eventId": "id3", "timestamp": "time3", "deviceid": "device3", "s3key": "s33"}]}
